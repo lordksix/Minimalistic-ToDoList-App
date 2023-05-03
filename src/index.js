@@ -8,7 +8,7 @@ const item3 = new ListItem('Item3', 3);
 const item4 = new ListItem('Item4', 4, true);
 const item5 = new ListItem('Item5', 5);
 
-const arrayItems = [item1, item2, item3, item4, item5];
+const arrayItems = [item1, item2, item3, item4, item5].sort((a, b) => a.index - b.index);
 const listUl = document.querySelector('#add-items');
 
 const classListIncomp = ['app-row', 'app-item'];

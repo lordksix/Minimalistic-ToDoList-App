@@ -50,8 +50,8 @@
 ### Key Features <a name="key-features"></a>
 
 - **WebPack implementation**
-- **Dinamically render list**
-- **Dinamically render SVG**
+- **Dynamically render list**
+- **Dynamically render SVG**
 - **Bundle build CSS, assets and HTML**
 - **Modular build using ESM**
 
