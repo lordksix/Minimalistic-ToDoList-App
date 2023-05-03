@@ -50,6 +50,10 @@
 ### Key Features <a name="key-features"></a>
 
 - **WebPack implementation**
+- **Dinamically render list**
+- **Dinamically render SVG**
+- **Bundle build CSS, assets and HTML**
+- **Modular build using ESM**
 
 ## 🚀 Live Demo <a name="live-demo"></a>
 
@@ -60,7 +64,8 @@ You can find a live demo in [HERE](https://lordksix.github.io/Minimalistic-ToDoL
 ## 💻 Getting Started <a name="getting-started"></a>
 
 
-To get a local copy up and running, follow these steps.
+To get a local copy up and running, follow these steps. To run local server or to make any modifications
+to the project NPM and Node.js must be installed.
 
 ### Prerequisites
 
@@ -96,13 +101,18 @@ To install dependencies, the following command must be run in the terminal:
 
 ### Usage
 
-To run the project, open with **index.html** with any web browser.
+To run the app, open with **index.html** with any web browser.
 
 For example, for Google Chrome with Ubuntu:
 
 ```sh
-  cd Minimalistic-ToDoList-App
+  cd build
   google-chrome index.html
+```
+Or, if you have setup NPM and Node.js, you have run a localhost using the following command:
+
+```sh
+  npm run start
 ```
 
 ### Run tests
@@ -113,7 +123,6 @@ There are no test available for this project.
 
 To deploy this project, use any web hosting service. Files to be used in deployment are:
 
-- index.html
 - all files in build folder
 
 This project is deployed using [GitHub Pages](https://pages.github.com/). 
@@ -134,7 +143,7 @@ Go to [🚀 Live Demo](#live-demo) to check it out.
 ## 🔭 Future Features <a name="future-features"></a>
 
 Future changes:
-- TBA
+- Add and remove funtionality
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
