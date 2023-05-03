@@ -1,14 +1,14 @@
 import elemGen from './elementGeneratorMod.js';
 import extraAtt from './elementExtraAttrMod.js';
 import btn from './buttonGeneratorMod.js';
-import svg from './createSvg.js';
+import { createNS } from './createSvg.js';
 import text from './createTextArea.js';
 import label from './createLabel.js';
 
 const createListItem = (index, href, textContent, classList = false, classBtn = false,
   classDivText = false, classText = false) => {
   const docFrag = document.createDocumentFragment();
-  const svgBtn = svg.createSvg(href[0]);
+  const svgBtn = createNS(href[0]);
   const chkBtn = btn.createButton('button', classBtn, 'Check Done', false, svgBtn);
   extraAtt.addAttributes(chkBtn, 'index', index, 'tabindex', '0');
   docFrag.appendChild(chkBtn);
@@ -18,9 +18,9 @@ const createListItem = (index, href, textContent, classList = false, classBtn = 
   const txtArea = text.createTextArea('255', classText, textContent);
   divText.appendChild(txtArea);
   docFrag.appendChild(divText);
-  const svgMove = svg.createSvg(href[1]);
+  const svgMove = createNS(href[1]);
   docFrag.appendChild(svgMove);
-  const svgRemove = svg.createSvg(href[2]);
+  const svgRemove = createNS(href[2]);
   docFrag.appendChild(svgRemove);
   const listItem = elemGen.createElementDefault('li', classList, false, docFrag);
   return listItem;

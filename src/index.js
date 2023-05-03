@@ -19,6 +19,8 @@ const classText = 'app-text';
 const xlinkHref = [`${svg}#icon-check`, './asset/resource/icons.svg#icon-more-vert',
   './asset/resource/icons.svg#icon-trash-o'];
 
+const listSec = document.querySelector('.list');
+
 const createItemLi = (item) => {
   const classList = item.isCompleted ? classListComp : classListIncomp;
   const element = createListItem(item.index, xlinkHref, item.descrip, classList,
@@ -26,6 +28,22 @@ const createItemLi = (item) => {
   return element;
 };
 
+const toggleCompleted = (e) => {
+  e.preventDefault();
+  if (e.target.classList.contains('item-chk')) {
+    const listItem = e.target.parentNode;
+    listItem.classList.toggle('completed');
+  } else if (e.target.classList.contains('icon-check')) {
+    const listItem = e.target.parentNode.parentNode;
+    listItem.classList.toggle('completed');
+  } else if (e.target.classList.contains('icon-check-use')) {
+    const listItem = e.target.parentNode.parentNode.parentNode;
+    listItem.classList.toggle('completed');
+  }
+};
+
 arrayItems.forEach((item) => {
   listUl.appendChild(createItemLi(item));
 });
+
+listSec.addEventListener('click', toggleCompleted);
