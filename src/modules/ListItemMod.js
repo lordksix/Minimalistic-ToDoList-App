@@ -33,7 +33,7 @@ const createListItem = (index, href, textContent, classList = false, classBtn = 
  * @param {number} index Position of List Iteam
  * @returns {object} New class with title and author properties
  */
-class ListItem {
+class ItemElem {
   constructor(descrip, index, isCompleted = false) {
     this.descrip = descrip;
     this.isCompleted = isCompleted;
@@ -43,5 +43,5 @@ class ListItem {
 
 export {
   createListItem,
-  ListItem,
+  ItemElem,
 };
