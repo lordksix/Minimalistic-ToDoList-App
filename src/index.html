@@ -4,9 +4,32 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Wbpack Exercise</title>
+  <title>Awesome-ToDo-List App</title>
 </head>
 <body>
-  <h1>Hello webpack!</h1>
+  <h1>Awesome ToDo List!</h1>
+  <main>
+    <div class="app-container" id="app">
+      <div class="app-row">
+        <a href="https://github.com/lordksix" aria-label="Go to Creator Profile"><svg class="profile-generic"><use href="./asset/resource/icons.svg#profile-generic"></use></svg></a>
+        <div class="app-text app-title" title="Title of List">My List</div>
+        <div class="refresh">
+          <svg class="icon-arrows-ccw" aria-label="Refresh List"><use href="./asset/resource/icons.svg#icon-arrows-ccw"></use></svg>
+          <span class="done-count"></span>
+        </div>
+      </div>
+      <div class="list">
+        <ul class="items" id="add-items">
+          <li>
+            <form class="app-input">
+              <input type="text" id="newitem" placeholder="Add to your list ..." maxlength="255">
+              <input type="submit" id="sumbit-newitem" value title="Tap or press enter to submit" tabindex="-1">
+            </form>
+          </li>
+        </ul>
+      </div>
+      <button type="button" class="clr-btn">Clear all completed</button>
+    </div>
+  </main>
 </body>
 </html>
