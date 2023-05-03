@@ -113,7 +113,7 @@ div svg {
 }
 
 #sumbit-newitem {
-  background-image: url('./resource/images/enter.png');
+  background-image: url('./asset/resource/enter.png');
   background-repeat: no-repeat;
   background-position: center;
   appearance: none;
