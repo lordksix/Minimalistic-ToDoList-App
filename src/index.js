@@ -81,6 +81,14 @@ const updateList = (e) => {
   }
 };
 
+const dragStart = () => {
+  console.log('1');
+}
+
+const dragEnd = () => {
+  console.log('2');
+}
+
 /**
  * Function to add items to class and DOM whenever a new item is sumbit
  * @param {event} e Event given by addEventListener
@@ -89,6 +97,8 @@ const updateList = (e) => {
 const addItem = (e) => {
   e.preventDefault();
   const newChild = ListOfItems.add(newItem, xlinkHref);
+  newChild.addEventListener('dragstart', dragStart);
+  newChild.addEventListener('dragend', dragEnd);
   listUl.appendChild(newChild);
 };
 
@@ -112,7 +122,7 @@ const removeItems = (e) => {
   }
 };
 
-ItemList.renderList(listUl, localName);
+ItemList.renderList(listUl, localName, dragStart, dragEnd);
 
 listSec.addEventListener('click', updateList);
 submitBtn.addEventListener('click', addItem);

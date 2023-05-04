@@ -107,13 +107,16 @@ class ItemList {
  * @param {string} bookDivName name of class to be used to add book to bookshelf.
  * @returns {void} Void
  */
-  static renderList(ListContainer, localName) {
+  static renderList(ListContainer, localName, dragStart, dragEnd) {
     const itemList = localStorage.getItem(`${localName}`) ? JSON.parse(localStorage.getItem(`${localName}`)) : [];
     const ListFrag = document.createDocumentFragment();
     itemList.forEach((listitem) => {
       const { index, descrip, isCompleted } = listitem;
       const classesSec = itemClasses(isCompleted);
-      ListFrag.appendChild(createListItem(index, xlinkHref, descrip, ...classesSec));
+      const newChild = createListItem(index, xlinkHref, descrip, ...classesSec);
+      newChild.addEventListener('dragstart', dragStart);
+      newChild.addEventListener('dragend', dragEnd);
+      ListFrag.appendChild(newChild);
     });
     while (ListContainer.childNodes.length > 2) {
       ListContainer.removeChild(ListContainer.lastChild);
