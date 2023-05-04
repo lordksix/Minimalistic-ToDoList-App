@@ -54,6 +54,9 @@
 - **Dynamically render SVG**
 - **Bundle build CSS, assets and HTML**
 - **Modular build using ESM**
+- **Add, remove and edit functionality**
+- **Complete status**
+- **Local Storage Implementation**
 
 ## 🚀 Live Demo <a name="live-demo"></a>
 
