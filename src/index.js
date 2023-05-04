@@ -10,15 +10,10 @@ const listSec = document.querySelector('.list');
 const submitBtn = document.getElementById('sumbit-newitem');
 const ListOfItems = new ItemList(localName);
 
-const changeDescripEvent = (div, label, textArea, e) => {
-  if (e.code === 'Enter') {
-    e.preventDefault();
-    label.textContent = textArea.value;
-    label.style.display = 'flex';
-    textArea.style.display = 'none';
-    const id = parseInt(div.parentNode.dataset.index, 10);
-    ListOfItems.updateDescrip(id, textArea.value);
-  }
+const changeDescrip = (div, label, textArea) => {
+  label.textContent = textArea.value;
+  const id = parseInt(div.parentNode.dataset.index, 10);
+  ListOfItems.updateDescrip(id, textArea.value);
 };
 
 const updateDescription = (div) => {
@@ -28,11 +23,21 @@ const updateDescription = (div) => {
   textArea.style.display = 'flex';
   textArea.focus();
   textArea.addEventListener('focusout', () => {
-    label.textContent = textArea.value;
+    changeDescrip(div, label, textArea);
     label.style.display = 'flex';
     textArea.style.display = 'none';
   });
-  textArea.addEventListener('keydown', (e) => changeDescripEvent(div, label, textArea, e));
+  textArea.addEventListener('keydown', (e) => {
+    if (e.code === 'Enter') {
+      e.preventDefault();
+      changeDescrip(div, label, textArea);
+      label.style.display = 'flex';
+      textArea.style.display = 'none';
+    }
+  });
+  textArea.addEventListener('input', () => {
+    changeDescrip(div, label, textArea);
+  });
 };
 
 const updateList = (e) => {
