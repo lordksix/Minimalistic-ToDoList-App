@@ -54,7 +54,7 @@ body {
 
 .app-row {
   display: grid;
-  grid-template-columns: auto 1fr auto;
+  grid-template-columns: auto 1fr auto auto;
   justify-content: space-between;
   height: var(--app-row-height);
   padding-block: var(--app-row-block-pad);
@@ -90,7 +90,7 @@ div svg {
 }
 
 .icon-trash-o {
-  display: none;
+  cursor: pointer;
 }
 
 .app-container button,

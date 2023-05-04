@@ -12,7 +12,7 @@ const ListOfItems = new ItemList(localName);
 
 const changeDescrip = (div, label, textArea) => {
   label.textContent = textArea.value;
-  const id = parseInt(div.parentNode.dataset.index, 10);
+  const id = parseInt(div.dataset.index, 10);
   ListOfItems.updateDescrip(id, textArea.value);
 };
 
@@ -55,7 +55,17 @@ const updateList = (e) => {
     listItem.classList.toggle('completed');
     ListOfItems.togglecomplete(parseInt(listItem.dataset.index, 10));
   } else if ((e.target.classList.contains('app-text'))) {
-    updateDescription(e.target.parentNode);
+    updateDescription(e.target.parentNode.parentNode);
+  } else if (e.target.classList.contains('icon-trash-o')) {
+    const listItem = e.target.parentNode;
+    ListOfItems.removeitem(parseInt(listItem.dataset.index, 10), listItem, listUl);
+    listUl.removeChild(listItem);
+    ListOfItems.updateList('.app-item');
+  } else if (e.target.classList.contains('icon-trash-o-use')) {
+    const listItem = e.target.parentNode.parentNode;
+    ListOfItems.removeitem(parseInt(listItem.dataset.index, 10), listItem, listUl);
+    listUl.removeChild(listItem);
+    ListOfItems.updateList('.app-item');
   }
 };
 
