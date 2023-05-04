@@ -29,25 +29,26 @@ class ItemList {
   }
 
   /**
-   * Method to remove item to local storage, class and from DOM.
+   * Method to remove item to local storage and class.
    * @param {string} descrip Description of item as input by user
    * @param {Array} xlink array of string with href for svg icons
-   * @param {HTMLElement} itemContainer HTML element where list item are going to be added.
    * @param {Array} classesSec Array of strings with class names for each part of the section.
    * Length 4.
    * @returns {void}
    */
-  add(descrip, xlink, ListContainer) {
+  add(descrip, xlink) {
+    let newChild = false;
     if (descrip.value.length) {
       const index = this.length + 1;
       const item = new ItemElem(descrip.value, index);
       this.itemArray = this.itemArray.concat(item);
       localStorage.setItem(this.localName, JSON.stringify(this.itemArray));
       const classesSec = itemClasses();
-      ListContainer.appendChild(createListItem(index, xlink, descrip.value, ...classesSec));
+      newChild = createListItem(index, xlink, descrip.value, ...classesSec);
       this.length += 1;
     }
     descrip.value = '';
+    return newChild;
   }
 
   /**
@@ -99,6 +100,17 @@ class ItemList {
     localStorage.setItem(this.localName, JSON.stringify(this.itemArray));
   }
 
+  updateIndex(oldPos, newPos) {
+    oldPos -= 1;
+    console.log(oldPos);
+    const currItem = JSON.parse(JSON.stringify(this.itemArray[oldPos]));
+    const firstHalf = this.itemArray.slice(0, oldPos);
+    const secondHalf = this.itemArray.slice(oldPos + 1, this.itemArray.length);
+    this.itemArray = firstHalf.concat(secondHalf);
+    this.itemArray.splice(newPos, 0, currItem);
+    localStorage.setItem(this.localName, JSON.stringify(this.itemArray));
+  }
+
   /**
  * Static method of BookBiding. Updates Local Storate and re renders bookshelf section.
  * @param {HTMLElement} bookshelf HTML element where books are going to be added.
@@ -106,17 +118,22 @@ class ItemList {
  * @param {string} bookDivName name of class to be used to add book to bookshelf.
  * @returns {void} Void
  */
-  static renderList(ListContainer, localName) {
+  static renderList(ListContainer, localName, addDragEventListeners) {
     const itemList = localStorage.getItem(`${localName}`) ? JSON.parse(localStorage.getItem(`${localName}`)) : [];
     const ListFrag = document.createDocumentFragment();
+    console.log(itemList);
     itemList.forEach((listitem) => {
       const { index, descrip, isCompleted } = listitem;
       const classesSec = itemClasses(isCompleted);
-      ListFrag.appendChild(createListItem(index, xlinkHref, descrip, ...classesSec));
+      const newChild = createListItem(index, xlinkHref, descrip, ...classesSec);
+      ListFrag.appendChild(newChild);
     });
-    while (ListContainer.childNodes.length > 2) {
-      ListContainer.removeChild(ListContainer.lastChild);
+    const target = { ListContainer, element: undefined };
+    // eslint-disable-next-line no-restricted-syntax
+    for (const item of ListFrag.children) {
+      addDragEventListeners(item, target);
     }
+    ListContainer.innerHTML = '';
     ListContainer.appendChild(ListFrag);
     localStorage.setItem(`${localName}`, JSON.stringify(itemList));
   }

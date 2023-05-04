@@ -175,3 +175,7 @@ div svg {
   outline: none;
   background-color: transparent;
 }
+
+.dragging {
+  opacity: 0.5;
+}

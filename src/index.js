@@ -9,6 +9,7 @@ const localName = 'itemlist';
 const listSec = document.querySelector('.list');
 const submitBtn = document.getElementById('sumbit-newitem');
 const ListOfItems = new ItemList(localName);
+let dragIndex;
 
 const changeDescrip = (div, label, textArea) => {
   label.textContent = textArea.value;
@@ -81,6 +82,40 @@ const updateList = (e) => {
   }
 };
 
+const compareOrder = (elem1, elem2) => {
+  if (elem1.parentNode !== elem2.parentNode) {
+    return null;
+  }
+  if (elem1 === elem2) return 0;
+
+  // eslint-disable-next-line no-bitwise
+  if (elem1.compareDocumentPosition(elem2) & Node.DOCUMENT_POSITION_FOLLOWING) {
+    return -1;
+  }
+  return 1;
+};
+
+const addDragEventListeners = (elem, draggedTarget) => {
+  elem.addEventListener('dragstart', () => {
+    draggedTarget.element = elem;
+    elem.classList.add('dragging');
+    dragIndex = +draggedTarget.element.dataset.index;
+  });
+
+  elem.addEventListener('dragover', () => {
+    const order = compareOrder(elem, draggedTarget.element);
+    if (!order) return;
+    const baseElement = order === -1 ? elem : elem.nextSlibing;
+    draggedTarget.ListContainer.insertBefore(draggedTarget.element, baseElement);
+  });
+  elem.addEventListener('dragend', () => {
+    elem.classList.remove('dragging');
+    const newPost = Array.from(elem.parentNode.children).indexOf(elem);
+    ListOfItems.updateIndex(dragIndex, newPost);
+    ListOfItems.updateList('.app-item');
+  });
+};
+
 /**
  * Function to add items to class and DOM whenever a new item is sumbit
  * @param {event} e Event given by addEventListener
@@ -88,7 +123,10 @@ const updateList = (e) => {
  */
 const addItem = (e) => {
   e.preventDefault();
-  ListOfItems.add(newItem, xlinkHref, listUl);
+  const newChild = ListOfItems.add(newItem, xlinkHref);
+  listUl.appendChild(newChild);
+  const target = { listUl, element: undefined };
+  addDragEventListeners(newChild, target);
 };
 
 /**
@@ -111,7 +149,7 @@ const removeItems = (e) => {
   }
 };
 
-ItemList.renderList(listUl, localName);
+ItemList.renderList(listUl, localName, addDragEventListeners);
 
 listSec.addEventListener('click', updateList);
 submitBtn.addEventListener('click', addItem);
