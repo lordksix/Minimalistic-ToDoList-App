@@ -29,7 +29,7 @@ class ItemList {
   }
 
   /**
-   * Method to remove book to local staorage, bookbiding and from DOM.
+   * Method to remove item to local storage, class and from DOM.
    * @param {string} descrip Description of item as input by user
    * @param {Array} xlink array of string with href for svg icons
    * @param {HTMLElement} itemContainer HTML element where list item are going to be added.
@@ -51,10 +51,8 @@ class ItemList {
   }
 
   /**
- * Method to remove book from local staorage, bookbiding and from DOM.
- * @param {number} index position in array of books of the book to be removed.
- * @param {HTMLElement} bookRemove HTMLElement with book to be removed
- * @param {HTMLElement} bookshelf HTML element where books are going to be added.
+ * Method to remove item from local storage and class.
+ * @param {number} id Index of item to be removed
  * @returns {void}
  */
   removeitem(id) {
@@ -63,18 +61,34 @@ class ItemList {
     this.length -= 1;
   }
 
+  /**
+   * Method to update description of in local storage and class
+   * @param {number} id Index of item
+   * @param {string} description New description of item to be added
+   * @returns {void} VOid
+   */
   updateDescrip(id, description) {
     id -= 1;
     this.itemArray[id].descrip = description;
     localStorage.setItem(this.localName, JSON.stringify(this.itemArray));
   }
 
+  /**
+   * Method to toggle completeness status of item in local storage and class
+   * @param {number} id Index of item
+   * @returns {void} void
+   */
   togglecomplete(id) {
     id -= 1;
     this.itemArray[id].isCompleted = !this.itemArray[id].isCompleted;
     localStorage.setItem(this.localName, JSON.stringify(this.itemArray));
   }
 
+  /**
+   * Method to update index of each item in class and update data-index in DOM
+   * @param {string} itemClass Name of class of item elements in DOM
+   * @returns {void} void
+   */
   updateList(itemClass) {
     const itemsRender = document.querySelectorAll(itemClass);
     this.itemArray.forEach((listitem, i) => {

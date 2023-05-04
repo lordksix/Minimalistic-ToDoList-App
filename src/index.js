@@ -1,5 +1,5 @@
-import { ItemList, xlinkHref } from './modules/ItemList.js';
 import './index.css';
+import { ItemList, xlinkHref } from './modules/ItemList.js';
 
 const listUl = document.querySelector('#add-items');
 const newItem = document.querySelector('#newitem');
@@ -16,6 +16,12 @@ const changeDescrip = (div, label, textArea) => {
   ListOfItems.updateDescrip(id, textArea.value);
 };
 
+/**
+ * Function to handle the change of description of a single item.
+ * Also updates index of all remaining items in class and data-index in DOM
+ * @param {any} div
+ * @returns {any}
+ */
 const updateDescription = (div) => {
   const label = div.querySelector('label');
   const textArea = div.querySelector('textarea');
@@ -40,6 +46,12 @@ const updateDescription = (div) => {
   });
 };
 
+/**
+ * Function to update (remove or change description) of item or items from class and DOM.
+ * Also updates index of all remaining items in class and data-index in DOM
+ * @param {any} e
+ * @returns {any}
+ */
 const updateList = (e) => {
   e.preventDefault();
   if (e.target.classList.contains('item-chk')) {
@@ -69,11 +81,22 @@ const updateList = (e) => {
   }
 };
 
+/**
+ * Function to add items to class and DOM whenever a new item is sumbit
+ * @param {event} e Event given by addEventListener
+ * @returns {void} void
+ */
 const addItem = (e) => {
   e.preventDefault();
   ListOfItems.add(newItem, xlinkHref, listUl);
 };
 
+/**
+ * Function to remove all item with complete class from DOM and class.
+ * Also updates index of all remaining items in class and data-index in DOM
+ * @param {any} e Event given by addEventListener
+ * @returns {void} void
+ */
 const removeItems = (e) => {
   e.preventDefault();
   const itemCompleted = document.querySelectorAll('.completed');
