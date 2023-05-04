@@ -29,25 +29,26 @@ class ItemList {
   }
 
   /**
-   * Method to remove item to local storage, class and from DOM.
+   * Method to remove item to local storage and class.
    * @param {string} descrip Description of item as input by user
    * @param {Array} xlink array of string with href for svg icons
-   * @param {HTMLElement} itemContainer HTML element where list item are going to be added.
    * @param {Array} classesSec Array of strings with class names for each part of the section.
    * Length 4.
    * @returns {void}
    */
-  add(descrip, xlink, ListContainer) {
+  add(descrip, xlink) {
+    let newChild = false;
     if (descrip.value.length) {
       const index = this.length + 1;
       const item = new ItemElem(descrip.value, index);
       this.itemArray = this.itemArray.concat(item);
       localStorage.setItem(this.localName, JSON.stringify(this.itemArray));
       const classesSec = itemClasses();
-      ListContainer.appendChild(createListItem(index, xlink, descrip.value, ...classesSec));
+      newChild = createListItem(index, xlink, descrip.value, ...classesSec);
       this.length += 1;
     }
     descrip.value = '';
+    return newChild;
   }
 
   /**

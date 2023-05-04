@@ -88,7 +88,8 @@ const updateList = (e) => {
  */
 const addItem = (e) => {
   e.preventDefault();
-  ListOfItems.add(newItem, xlinkHref, listUl);
+  const newChild = ListOfItems.add(newItem, xlinkHref);
+  listUl.appendChild(newChild);
 };
 
 /**

@@ -24,6 +24,7 @@ const createListItem = (index, href, textContent, classList = false, classBtn = 
   docFrag.appendChild(svgRemove);
   const listItem = elemGen.createElementDefault('li', classList, false, docFrag);
   extraAtt.addAttributes(listItem, 'index', index);
+  listItem.setAttribute('draggable', 'true');
   return listItem;
 };
 
