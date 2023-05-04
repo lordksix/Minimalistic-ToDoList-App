@@ -10,7 +10,7 @@ const createListItem = (index, href, textContent, classList = false, classBtn = 
   const docFrag = document.createDocumentFragment();
   const svgBtn = createNS(href[0]);
   const chkBtn = btn.createButton('button', classBtn, 'Check Done', false, svgBtn);
-  extraAtt.addAttributes(chkBtn, 'index', index, 'tabindex', '0');
+  extraAtt.addAttributes(chkBtn, false, false, 'tabindex', '0');
   docFrag.appendChild(chkBtn);
   const labelTxt = label.createLabel(false, classText, textContent);
   extraAtt.addAttributes(labelTxt, false, false, 'tabindex', '0');
@@ -23,6 +23,7 @@ const createListItem = (index, href, textContent, classList = false, classBtn = 
   const svgRemove = createNS(href[2]);
   docFrag.appendChild(svgRemove);
   const listItem = elemGen.createElementDefault('li', classList, false, docFrag);
+  extraAtt.addAttributes(listItem, 'index', index);
   return listItem;
 };
 

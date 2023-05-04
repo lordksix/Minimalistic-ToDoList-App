@@ -39,28 +39,57 @@ class ItemList {
    */
   add(descrip, xlink, ListContainer) {
     if (descrip.value.length) {
-      const index = this.length;
+      const index = this.length + 1;
       const item = new ItemElem(descrip.value, index);
       this.itemArray = this.itemArray.concat(item);
       localStorage.setItem(this.localName, JSON.stringify(this.itemArray));
       const classesSec = itemClasses();
       ListContainer.appendChild(createListItem(index, xlink, descrip.value, ...classesSec));
+      this.length += 1;
     }
     descrip.value = '';
   }
 
   /**
-   * Static method of BookBiding. Updates Local Storate and re renders bookshelf section.
-   * @param {HTMLElement} bookshelf HTML element where books are going to be added.
-   * @param {string} localName name to be used to add bookbinding to local storage.
-   * @param {string} bookDivName name of class to be used to add book to bookshelf.
-   * @returns {void} Void
-   */
-  static update(ListContainer, localName) {
+ * Method to remove book from local staorage, bookbiding and from DOM.
+ * @param {number} index position in array of books of the book to be removed.
+ * @param {HTMLElement} bookRemove HTMLElement with book to be removed
+ * @param {HTMLElement} bookshelf HTML element where books are going to be added.
+ * @returns {void}
+ */
+  removeitem(id) {
+    this.itemArray = this.itemArray.filter((item) => item.index !== id);
+    localStorage.setItem(this.localName, JSON.stringify(this.itemArray));
+    this.length -= 1;
+  }
+
+  togglecomplete(id) {
+    id -= 1;
+    this.itemArray[id].isCompleted = !this.itemArray[id].isCompleted;
+    localStorage.setItem(this.localName, JSON.stringify(this.itemArray));
+  }
+
+  updateList(itemClass) {
+    const itemsRender = document.querySelectorAll(itemClass);
+    this.itemArray.forEach((listitem, i) => {
+      const id = i + 1;
+      listitem.index = id;
+      itemsRender[i].dataset.index = id;
+    });
+    localStorage.setItem(this.localName, JSON.stringify(this.itemArray));
+  }
+
+  /**
+ * Static method of BookBiding. Updates Local Storate and re renders bookshelf section.
+ * @param {HTMLElement} bookshelf HTML element where books are going to be added.
+ * @param {string} localName name to be used to add bookbinding to local storage.
+ * @param {string} bookDivName name of class to be used to add book to bookshelf.
+ * @returns {void} Void
+ */
+  static renderList(ListContainer, localName) {
     const itemList = localStorage.getItem(`${localName}`) ? JSON.parse(localStorage.getItem(`${localName}`)) : [];
     const ListFrag = document.createDocumentFragment();
-    itemList.forEach((listitem, i) => {
-      listitem.index = i;
+    itemList.forEach((listitem) => {
       const { index, descrip, isCompleted } = listitem;
       const classesSec = itemClasses(isCompleted);
       ListFrag.appendChild(createListItem(index, xlinkHref, descrip, ...classesSec));
@@ -69,6 +98,7 @@ class ItemList {
       ListContainer.removeChild(ListContainer.lastChild);
     }
     ListContainer.appendChild(ListFrag);
+    localStorage.setItem(`${localName}`, JSON.stringify(itemList));
   }
 }
 
