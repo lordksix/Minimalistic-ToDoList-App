@@ -63,6 +63,12 @@ class ItemList {
     this.length -= 1;
   }
 
+  updateDescrip(id, description) {
+    id -= 1;
+    this.itemArray[id].descrip = description;
+    localStorage.setItem(this.localName, JSON.stringify(this.itemArray));
+  }
+
   togglecomplete(id) {
     id -= 1;
     this.itemArray[id].isCompleted = !this.itemArray[id].isCompleted;

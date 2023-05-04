@@ -161,3 +161,17 @@ div svg {
 .completed .app-text {
   text-decoration: line-through;
 }
+
+.item label,
+.item textarea {
+  flex-grow: 1;
+  height: var(--svg-side);
+  resize: none;
+  border: none;
+  background-color: transparent;
+}
+
+.item textarea:focus {
+  outline: none;
+  background-color: transparent;
+}
