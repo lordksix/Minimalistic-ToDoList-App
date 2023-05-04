@@ -100,6 +100,17 @@ class ItemList {
     localStorage.setItem(this.localName, JSON.stringify(this.itemArray));
   }
 
+  updateIndex(oldPos, newPos) {
+    oldPos -= 1;
+    console.log(oldPos);
+    const currItem = JSON.parse(JSON.stringify(this.itemArray[oldPos]));
+    const firstHalf = this.itemArray.slice(0, oldPos);
+    const secondHalf = this.itemArray.slice(oldPos + 1, this.itemArray.length);
+    this.itemArray = firstHalf.concat(secondHalf);
+    this.itemArray.splice(newPos, 0, currItem);
+    localStorage.setItem(this.localName, JSON.stringify(this.itemArray));
+  }
+
   /**
  * Static method of BookBiding. Updates Local Storate and re renders bookshelf section.
  * @param {HTMLElement} bookshelf HTML element where books are going to be added.
@@ -107,20 +118,22 @@ class ItemList {
  * @param {string} bookDivName name of class to be used to add book to bookshelf.
  * @returns {void} Void
  */
-  static renderList(ListContainer, localName, dragStart, dragEnd) {
+  static renderList(ListContainer, localName, addDragEventListeners) {
     const itemList = localStorage.getItem(`${localName}`) ? JSON.parse(localStorage.getItem(`${localName}`)) : [];
     const ListFrag = document.createDocumentFragment();
+    console.log(itemList);
     itemList.forEach((listitem) => {
       const { index, descrip, isCompleted } = listitem;
       const classesSec = itemClasses(isCompleted);
       const newChild = createListItem(index, xlinkHref, descrip, ...classesSec);
-      newChild.addEventListener('dragstart', dragStart);
-      newChild.addEventListener('dragend', dragEnd);
       ListFrag.appendChild(newChild);
     });
-    while (ListContainer.childNodes.length > 2) {
-      ListContainer.removeChild(ListContainer.lastChild);
+    const target = { ListContainer, element: undefined };
+    // eslint-disable-next-line no-restricted-syntax
+    for (const item of ListFrag.children) {
+      addDragEventListeners(item, target);
     }
+    ListContainer.innerHTML = '';
     ListContainer.appendChild(ListFrag);
     localStorage.setItem(`${localName}`, JSON.stringify(itemList));
   }

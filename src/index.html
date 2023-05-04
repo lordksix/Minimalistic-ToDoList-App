@@ -19,13 +19,11 @@
         </div>
       </div>
       <div class="list">
+        <form id="app-input">
+          <input type="text" id="newitem" placeholder="Add to your list ..." maxlength="255">
+          <input type="submit" id="sumbit-newitem" value title="Tap or press enter to submit" tabindex="-1">
+        </form>
         <ul class="items" id="add-items">
-          <li>
-            <form id="app-input">
-              <input type="text" id="newitem" placeholder="Add to your list ..." maxlength="255">
-              <input type="submit" id="sumbit-newitem" value title="Tap or press enter to submit" tabindex="-1">
-            </form>
-          </li>
         </ul>
       </div>
       <button type="button" class="clr-btn">Clear all completed</button>

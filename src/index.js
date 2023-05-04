@@ -9,6 +9,7 @@ const localName = 'itemlist';
 const listSec = document.querySelector('.list');
 const submitBtn = document.getElementById('sumbit-newitem');
 const ListOfItems = new ItemList(localName);
+let dragIndex;
 
 const changeDescrip = (div, label, textArea) => {
   label.textContent = textArea.value;
@@ -81,13 +82,39 @@ const updateList = (e) => {
   }
 };
 
-const dragStart = () => {
-  console.log('1');
-}
+const compareOrder = (elem1, elem2) => {
+  if (elem1.parentNode !== elem2.parentNode) {
+    return null;
+  }
+  if (elem1 === elem2) return 0;
 
-const dragEnd = () => {
-  console.log('2');
-}
+  // eslint-disable-next-line no-bitwise
+  if (elem1.compareDocumentPosition(elem2) & Node.DOCUMENT_POSITION_FOLLOWING) {
+    return -1;
+  }
+  return 1;
+};
+
+const addDragEventListeners = (elem, draggedTarget) => {
+  elem.addEventListener('dragstart', () => {
+    draggedTarget.element = elem;
+    elem.classList.add('dragging');
+    dragIndex = +draggedTarget.element.dataset.index;
+  });
+
+  elem.addEventListener('dragover', () => {
+    const order = compareOrder(elem, draggedTarget.element);
+    if (!order) return;
+    const baseElement = order === -1 ? elem : elem.nextSlibing;
+    draggedTarget.ListContainer.insertBefore(draggedTarget.element, baseElement);
+  });
+  elem.addEventListener('dragend', () => {
+    elem.classList.remove('dragging');
+    const newPost = Array.from(elem.parentNode.children).indexOf(elem);
+    ListOfItems.updateIndex(dragIndex, newPost);
+    ListOfItems.updateList('.app-item');
+  });
+};
 
 /**
  * Function to add items to class and DOM whenever a new item is sumbit
@@ -97,9 +124,9 @@ const dragEnd = () => {
 const addItem = (e) => {
   e.preventDefault();
   const newChild = ListOfItems.add(newItem, xlinkHref);
-  newChild.addEventListener('dragstart', dragStart);
-  newChild.addEventListener('dragend', dragEnd);
   listUl.appendChild(newChild);
+  const target = { listUl, element: undefined };
+  addDragEventListeners(newChild, target);
 };
 
 /**
@@ -122,7 +149,7 @@ const removeItems = (e) => {
   }
 };
 
-ItemList.renderList(listUl, localName, dragStart, dragEnd);
+ItemList.renderList(listUl, localName, addDragEventListeners);
 
 listSec.addEventListener('click', updateList);
 submitBtn.addEventListener('click', addItem);
