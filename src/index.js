@@ -1,49 +1,118 @@
-import { ListItem, createListItem } from './modules/ListItemMod.js';
 import './index.css';
-import svg from './asset/resource/icons.svg';
+import { ItemList, xlinkHref } from './modules/ItemList.js';
 
-const item1 = new ListItem('Item1', 1);
-const item2 = new ListItem('Item2', 2, true);
-const item3 = new ListItem('Item3', 3);
-const item4 = new ListItem('Item4', 4, true);
-const item5 = new ListItem('Item5', 5);
-
-const arrayItems = [item1, item2, item3, item4, item5].sort((a, b) => a.index - b.index);
 const listUl = document.querySelector('#add-items');
-
-const classListIncomp = ['app-row', 'app-item'];
-const classListComp = ['app-row', 'app-item', 'completed'];
-const classBtn = 'item-chk';
-const classDivText = 'item';
-const classText = 'app-text';
-const xlinkHref = [`${svg}#icon-check`, './asset/resource/icons.svg#icon-more-vert',
-  './asset/resource/icons.svg#icon-trash-o'];
+const newItem = document.querySelector('#newitem');
+const clearBtn = document.querySelector('.clr-btn');
+const localName = 'itemlist';
 
 const listSec = document.querySelector('.list');
+const submitBtn = document.getElementById('sumbit-newitem');
+const ListOfItems = new ItemList(localName);
 
-const createItemLi = (item) => {
-  const classList = item.isCompleted ? classListComp : classListIncomp;
-  const element = createListItem(item.index, xlinkHref, item.descrip, classList,
-    classBtn, classDivText, classText);
-  return element;
+const changeDescrip = (div, label, textArea) => {
+  label.textContent = textArea.value;
+  const id = parseInt(div.dataset.index, 10);
+  ListOfItems.updateDescrip(id, textArea.value);
 };
 
-const toggleCompleted = (e) => {
+/**
+ * Function to handle the change of description of a single item.
+ * Also updates index of all remaining items in class and data-index in DOM
+ * @param {any} div
+ * @returns {any}
+ */
+const updateDescription = (div) => {
+  const label = div.querySelector('label');
+  const textArea = div.querySelector('textarea');
+  label.style.display = 'none';
+  textArea.style.display = 'flex';
+  textArea.focus();
+  textArea.addEventListener('focusout', () => {
+    changeDescrip(div, label, textArea);
+    label.style.display = 'flex';
+    textArea.style.display = 'none';
+  });
+  textArea.addEventListener('keydown', (e) => {
+    if (e.code === 'Enter') {
+      e.preventDefault();
+      changeDescrip(div, label, textArea);
+      label.style.display = 'flex';
+      textArea.style.display = 'none';
+    }
+  });
+  textArea.addEventListener('input', () => {
+    changeDescrip(div, label, textArea);
+  });
+};
+
+/**
+ * Function to update (remove or change description) of item or items from class and DOM.
+ * Also updates index of all remaining items in class and data-index in DOM
+ * @param {any} e
+ * @returns {any}
+ */
+const updateList = (e) => {
   e.preventDefault();
   if (e.target.classList.contains('item-chk')) {
     const listItem = e.target.parentNode;
     listItem.classList.toggle('completed');
+    ListOfItems.togglecomplete(parseInt(listItem.dataset.index, 10));
   } else if (e.target.classList.contains('icon-check')) {
     const listItem = e.target.parentNode.parentNode;
     listItem.classList.toggle('completed');
+    ListOfItems.togglecomplete(parseInt(listItem.dataset.index, 10));
   } else if (e.target.classList.contains('icon-check-use')) {
     const listItem = e.target.parentNode.parentNode.parentNode;
     listItem.classList.toggle('completed');
+    ListOfItems.togglecomplete(parseInt(listItem.dataset.index, 10));
+  } else if ((e.target.classList.contains('app-text'))) {
+    updateDescription(e.target.parentNode.parentNode);
+  } else if (e.target.classList.contains('icon-trash-o')) {
+    const listItem = e.target.parentNode;
+    ListOfItems.removeitem(parseInt(listItem.dataset.index, 10), listItem, listUl);
+    listUl.removeChild(listItem);
+    ListOfItems.updateList('.app-item');
+  } else if (e.target.classList.contains('icon-trash-o-use')) {
+    const listItem = e.target.parentNode.parentNode;
+    ListOfItems.removeitem(parseInt(listItem.dataset.index, 10), listItem, listUl);
+    listUl.removeChild(listItem);
+    ListOfItems.updateList('.app-item');
   }
 };
 
-arrayItems.forEach((item) => {
-  listUl.appendChild(createItemLi(item));
-});
+/**
+ * Function to add items to class and DOM whenever a new item is sumbit
+ * @param {event} e Event given by addEventListener
+ * @returns {void} void
+ */
+const addItem = (e) => {
+  e.preventDefault();
+  ListOfItems.add(newItem, xlinkHref, listUl);
+};
 
-listSec.addEventListener('click', toggleCompleted);
+/**
+ * Function to remove all item with complete class from DOM and class.
+ * Also updates index of all remaining items in class and data-index in DOM
+ * @param {any} e Event given by addEventListener
+ * @returns {void} void
+ */
+const removeItems = (e) => {
+  e.preventDefault();
+  const itemCompleted = document.querySelectorAll('.completed');
+  if (itemCompleted.length > 0) {
+    itemCompleted.forEach((delItem) => {
+      ListOfItems.removeitem(parseInt(delItem.dataset.index, 10), delItem, listUl);
+    });
+    itemCompleted.forEach((delItem) => {
+      listUl.removeChild(delItem);
+    });
+    ListOfItems.updateList('.app-item');
+  }
+};
+
+ItemList.renderList(listUl, localName);
+
+listSec.addEventListener('click', updateList);
+submitBtn.addEventListener('click', addItem);
+clearBtn.addEventListener('click', removeItems);
