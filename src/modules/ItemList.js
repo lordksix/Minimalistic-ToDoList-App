@@ -102,7 +102,6 @@ class ItemList {
 
   updateIndex(oldPos, newPos) {
     oldPos -= 1;
-    console.log(oldPos);
     const currItem = JSON.parse(JSON.stringify(this.itemArray[oldPos]));
     const firstHalf = this.itemArray.slice(0, oldPos);
     const secondHalf = this.itemArray.slice(oldPos + 1, this.itemArray.length);
