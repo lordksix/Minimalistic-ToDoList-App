@@ -79,7 +79,7 @@ class ItemList {
    * @param {number} id Index of item
    * @returns {void} void
    */
-  togglecomplete(id) {
+  toggleComplete(id) {
     id -= 1;
     this.itemArray[id].isCompleted = !this.itemArray[id].isCompleted;
     localStorage.setItem(this.localName, JSON.stringify(this.itemArray));
@@ -120,7 +120,6 @@ class ItemList {
   static renderList(ListContainer, localName, addDragEventListeners) {
     const itemList = localStorage.getItem(`${localName}`) ? JSON.parse(localStorage.getItem(`${localName}`)) : [];
     const ListFrag = document.createDocumentFragment();
-    console.log(itemList);
     itemList.forEach((listitem) => {
       const { index, descrip, isCompleted } = listitem;
       const classesSec = itemClasses(isCompleted);

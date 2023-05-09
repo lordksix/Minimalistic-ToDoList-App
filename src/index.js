@@ -55,30 +55,40 @@ const updateDescription = (div) => {
  */
 const updateList = (e) => {
   e.preventDefault();
-  if (e.target.classList.contains('item-chk')) {
-    const listItem = e.target.parentNode;
-    listItem.classList.toggle('completed');
-    ListOfItems.togglecomplete(parseInt(listItem.dataset.index, 10));
-  } else if (e.target.classList.contains('icon-check')) {
-    const listItem = e.target.parentNode.parentNode;
-    listItem.classList.toggle('completed');
-    ListOfItems.togglecomplete(parseInt(listItem.dataset.index, 10));
-  } else if (e.target.classList.contains('icon-check-use')) {
-    const listItem = e.target.parentNode.parentNode.parentNode;
-    listItem.classList.toggle('completed');
-    ListOfItems.togglecomplete(parseInt(listItem.dataset.index, 10));
-  } else if ((e.target.classList.contains('app-text'))) {
-    updateDescription(e.target.parentNode.parentNode);
-  } else if (e.target.classList.contains('icon-trash-o')) {
-    const listItem = e.target.parentNode;
-    ListOfItems.removeitem(parseInt(listItem.dataset.index, 10), listItem, listUl);
-    listUl.removeChild(listItem);
-    ListOfItems.updateList('.app-item');
-  } else if (e.target.classList.contains('icon-trash-o-use')) {
-    const listItem = e.target.parentNode.parentNode;
-    ListOfItems.removeitem(parseInt(listItem.dataset.index, 10), listItem, listUl);
-    listUl.removeChild(listItem);
-    ListOfItems.updateList('.app-item');
+  let listItem;
+  switch (e.target.classList.value) {
+    case 'item-chk':
+      listItem = e.target.parentNode;
+      listItem.classList.toggle('completed');
+      ListOfItems.togglecomplete(parseInt(listItem.dataset.index, 10));
+      break;
+    case 'icon-check':
+      listItem = e.target.parentNode.parentNode;
+      listItem.classList.toggle('completed');
+      ListOfItems.togglecomplete(parseInt(listItem.dataset.index, 10));
+      break;
+    case 'icon-check-use':
+      listItem = e.target.parentNode.parentNode.parentNode;
+      listItem.classList.toggle('completed');
+      ListOfItems.togglecomplete(parseInt(listItem.dataset.index, 10));
+      break;
+    case 'app-text':
+      updateDescription(e.target.parentNode.parentNode);
+      break;
+    case 'icon-trash-o':
+      listItem = e.target.parentNode;
+      ListOfItems.removeitem(parseInt(listItem.dataset.index, 10), listItem, listUl);
+      listUl.removeChild(listItem);
+      ListOfItems.updateList('.app-item');
+      break;
+    case 'icon-trash-o-use':
+      listItem = e.target.parentNode.parentNode;
+      ListOfItems.removeitem(parseInt(listItem.dataset.index, 10), listItem, listUl);
+      listUl.removeChild(listItem);
+      ListOfItems.updateList('.app-item');
+      break;
+    default:
+      break;
   }
 };
 
