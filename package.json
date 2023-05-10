@@ -4,7 +4,8 @@
   "description": "<a name=\"readme-top\"></a>",
   "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest --coverage",
+    "watch": "jest --watchAll *.js",
     "dev": "webpack --mode development",
     "start": "webpack serve --open",
     "build": "webpack --mode production",
@@ -20,6 +21,12 @@
   "bugs": {
     "url": "https://github.com/lordksix/Minimalistic-ToDoList-App/issues"
   },
+  "jest": {
+    "resetMocks": false,
+    "setupFiles": [
+      "jest-localstorage-mock"
+    ]
+  },
   "homepage": "https://github.com/lordksix/Minimalistic-ToDoList-App#readme",
   "devDependencies": {
     "@babel/core": "^7.21.5",
@@ -33,6 +40,9 @@
     "gh-pages": "^5.0.0",
     "hint": "^7.1.8",
     "html-webpack-plugin": "^5.5.1",
+    "jest-environment-jsdom": "^29.5.0",
+    "jest-localstorage-mock": "^2.4.26",
+    "jsdom": "^22.0.0",
     "style-loader": "^3.3.2",
     "stylelint": "^13.13.1",
     "stylelint-config-standard": "^21.0.0",
