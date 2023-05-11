@@ -1,29 +1,27 @@
-import elemGen from './elementGeneratorMod.js';
-import extraAtt from './elementExtraAttrMod.js';
-import btn from './buttonGeneratorMod.js';
-import { createNS } from './createSvg.js';
-import text from './createTextArea.js';
-import label from './createLabel.js';
+import {
+  createLabel, createNS, createTextArea,
+  createElementDefault, createButton,
+} from './createElementMod.js';
 
 const createListItem = (index, href, textContent, classList = false, classBtn = false,
   classDivText = false, classText = false) => {
   const docFrag = document.createDocumentFragment();
   const svgBtn = createNS(href[0]);
-  const chkBtn = btn.createButton('button', classBtn, 'Check Done', false, svgBtn);
-  extraAtt.addAttributes(chkBtn, false, false, 'tabindex', '0');
+  const chkBtn = createButton('button', classBtn, 'Check Done', false, svgBtn);
+  chkBtn.setAttribute('tabindex', '0');
   docFrag.appendChild(chkBtn);
-  const labelTxt = label.createLabel(false, classText, textContent);
-  extraAtt.addAttributes(labelTxt, false, false, 'tabindex', '0');
-  const divText = elemGen.createElementDefault('div', classDivText, false, labelTxt);
-  const txtArea = text.createTextArea('255', classText, textContent);
+  const labelTxt = createLabel(false, classText, textContent);
+  labelTxt.setAttribute('tabindex', '0');
+  const divText = createElementDefault('div', classDivText, false, labelTxt);
+  const txtArea = createTextArea('255', classText, textContent);
   divText.appendChild(txtArea);
   docFrag.appendChild(divText);
   const svgMove = createNS(href[1]);
   docFrag.appendChild(svgMove);
   const svgRemove = createNS(href[2]);
   docFrag.appendChild(svgRemove);
-  const listItem = elemGen.createElementDefault('li', classList, false, docFrag);
-  extraAtt.addAttributes(listItem, 'index', index);
+  const listItem = createElementDefault('li', classList, false, docFrag);
+  listItem.setAttribute('data-index', index);
   listItem.setAttribute('draggable', 'true');
   return listItem;
 };
