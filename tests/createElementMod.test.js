@@ -2,7 +2,10 @@
  * @jest-environment jsdom
  */
 
-import { createButton, addClass } from '../src/modules/createElementMod.js';
+import {
+  createButton, addClass, createElementDefault,
+  createNS,
+} from '../src/modules/createElementMod.js';
 
 describe('Button Generator Function', () => {
   const typeBtn = 'button';
@@ -80,5 +83,36 @@ describe('Add Class Function', () => {
     btn.classList.add(classStr2);
 
     expect(addClass(btnTest, classArr)).toEqual(btn);
+  });
+});
+
+describe('Create Element Function', () => {
+  const div = document.createElement('div');
+  const textBtn = 'Clear All';
+  div.textContent = textBtn;
+  const classStr = 'clr-btn';
+  const classStr2 = 'awesome';
+  const classArr = ['clr-btn', 'awesome'];
+
+  test('Add one class to HTML element', () => {
+    div.classList.add(classStr);
+
+    expect(createElementDefault('div', classStr, textBtn)).toEqual(div);
+  });
+
+  test('Add multiple class to HTML', () => {
+    div.classList.add(classStr2);
+    expect(createElementDefault('div', classArr, textBtn)).toEqual(div);
+  });
+});
+
+describe('Create Element Function', () => {
+  const div = '<svg class="icon-more-vert"><use href="./asset/resource/icons.svg#icon-more-vert" class="icon-more-vert-use"></use></svg>';
+
+  test('Add one class to HTML element', () => {
+    const temp = document.createElement('div');
+    temp.appendChild(createNS('./asset/resource/icons.svg#icon-more-vert'));
+
+    expect(temp.innerHTML).toEqual(div);
   });
 });
