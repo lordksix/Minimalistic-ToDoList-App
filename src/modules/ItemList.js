@@ -1,19 +1,5 @@
 import { createListItem, ItemElem } from './ListItemMod.js';
-import icon from '../asset/resource/icons.svg';
-
-const xlinkHref = [`${icon}#icon-check`, './asset/resource/icons.svg#icon-more-vert',
-  './asset/resource/icons.svg#icon-trash-o'];
-
-const itemClasses = (status = false) => {
-  const classListIncomp = ['app-row', 'app-item'];
-  const classListComp = ['app-row', 'app-item', 'completed'];
-  const classBtn = 'item-chk';
-  const classDivText = 'item';
-  const classText = 'app-text';
-  const classList = status ? classListComp : classListIncomp;
-  const temp = [classList, classBtn, classDivText, classText];
-  return temp;
-};
+import { xlinkHref, itemClasses, localStorageInteration } from './itemClassHelperMod.js';
 
 /**
  * Class that creates and array to book class instances to be added to local storage
@@ -42,12 +28,12 @@ class ItemList {
       const index = this.length + 1;
       const item = new ItemElem(descrip.value, index);
       this.itemArray = this.itemArray.concat(item);
-      localStorage.setItem(this.localName, JSON.stringify(this.itemArray));
+      localStorageInteration(this.localName, this.itemArray);
       const classesSec = itemClasses();
-      newChild = createListItem(index, xlink, descrip.value, ...classesSec);
+      newChild = [index, xlink, descrip.value, ...classesSec];
       this.length += 1;
+      descrip.value = '';
     }
-    descrip.value = '';
     return newChild;
   }
 
@@ -58,7 +44,7 @@ class ItemList {
  */
   removeitem(id) {
     this.itemArray = this.itemArray.filter((item) => item.index !== id);
-    localStorage.setItem(this.localName, JSON.stringify(this.itemArray));
+    localStorageInteration(this.localName, this.itemArray);
     this.length -= 1;
   }
 
@@ -71,7 +57,7 @@ class ItemList {
   updateDescrip(id, description) {
     id -= 1;
     this.itemArray[id].descrip = description;
-    localStorage.setItem(this.localName, JSON.stringify(this.itemArray));
+    localStorageInteration(this.localName, this.itemArray);
   }
 
   /**
@@ -82,22 +68,21 @@ class ItemList {
   toggleComplete(id) {
     id -= 1;
     this.itemArray[id].isCompleted = !this.itemArray[id].isCompleted;
-    localStorage.setItem(this.localName, JSON.stringify(this.itemArray));
+    localStorageInteration(this.localName, this.itemArray);
   }
 
   /**
    * Method to update index of each item in class and update data-index in DOM
-   * @param {string} itemClass Name of class of item elements in DOM
+   * @param {NodeList} itemsRender List of node of all items
    * @returns {void} void
    */
-  updateList(itemClass) {
-    const itemsRender = document.querySelectorAll(itemClass);
+  updateList(itemsRender) {
     this.itemArray.forEach((listitem, i) => {
       const id = i + 1;
       listitem.index = id;
       itemsRender[i].dataset.index = id;
     });
-    localStorage.setItem(this.localName, JSON.stringify(this.itemArray));
+    localStorageInteration(this.localName, this.itemArray);
   }
 
   updateIndex(oldPos, newPos) {
@@ -107,7 +92,7 @@ class ItemList {
     const secondHalf = this.itemArray.slice(oldPos + 1, this.itemArray.length);
     this.itemArray = firstHalf.concat(secondHalf);
     this.itemArray.splice(newPos, 0, currItem);
-    localStorage.setItem(this.localName, JSON.stringify(this.itemArray));
+    localStorageInteration(this.localName, this.itemArray);
   }
 
   /**
@@ -133,7 +118,9 @@ class ItemList {
     }
     ListContainer.innerHTML = '';
     ListContainer.appendChild(ListFrag);
-    localStorage.setItem(`${localName}`, JSON.stringify(itemList));
+    localStorageInteration(`${localName}`, itemList);
+    if (ListFrag.childNodes.length > 0) return ListFrag;
+    return -1;
   }
 }
 

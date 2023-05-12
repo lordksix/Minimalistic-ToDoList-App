@@ -1,5 +1,6 @@
 import './index.css';
 import { ItemList, xlinkHref } from './modules/ItemList.js';
+import { createListItem } from './modules/ListItemMod.js';
 
 const listUl = document.querySelector('#add-items');
 const newItem = document.querySelector('#newitem');
@@ -9,7 +10,7 @@ const localName = 'itemlist';
 const listSec = document.querySelector('.list');
 const submitBtn = document.getElementById('sumbit-newitem');
 const ListOfItems = new ItemList(localName);
-let dragIndex;
+let dragIndex = 0;
 
 const changeDescrip = (div, label, textArea) => {
   label.textContent = textArea.value;
@@ -56,6 +57,7 @@ const updateDescription = (div) => {
 const updateList = (e) => {
   e.preventDefault();
   let listItem;
+  let itemsRender;
   switch (e.target.classList.value) {
     case 'item-chk':
       listItem = e.target.parentNode;
@@ -79,13 +81,15 @@ const updateList = (e) => {
       listItem = e.target.parentNode;
       ListOfItems.removeitem(parseInt(listItem.dataset.index, 10), listItem, listUl);
       listUl.removeChild(listItem);
-      ListOfItems.updateList('.app-item');
+      itemsRender = document.querySelectorAll('.app-item');
+      ListOfItems.updateList(itemsRender);
       break;
     case 'icon-trash-o-use':
       listItem = e.target.parentNode.parentNode;
       ListOfItems.removeitem(parseInt(listItem.dataset.index, 10), listItem, listUl);
       listUl.removeChild(listItem);
-      ListOfItems.updateList('.app-item');
+      itemsRender = document.querySelectorAll('.app-item');
+      ListOfItems.updateList(itemsRender);
       break;
     default:
       break;
@@ -122,7 +126,8 @@ const addDragEventListeners = (elem, draggedTarget) => {
     elem.classList.remove('dragging');
     const newPost = Array.from(elem.parentNode.children).indexOf(elem);
     ListOfItems.updateIndex(dragIndex, newPost);
-    ListOfItems.updateList('.app-item');
+    const itemsRender = document.querySelectorAll('.app-item');
+    ListOfItems.updateList(itemsRender);
   });
 };
 
@@ -133,10 +138,13 @@ const addDragEventListeners = (elem, draggedTarget) => {
  */
 const addItem = (e) => {
   e.preventDefault();
-  const newChild = ListOfItems.add(newItem, xlinkHref);
-  listUl.appendChild(newChild);
-  const target = { listUl, element: undefined };
-  addDragEventListeners(newChild, target);
+  const variable = ListOfItems.add(newItem, xlinkHref);
+  if (variable) {
+    const newChild = createListItem(...variable);
+    listUl.appendChild(newChild);
+    const target = { listUl, element: undefined };
+    addDragEventListeners(newChild, target);
+  }
 };
 
 /**
@@ -155,7 +163,8 @@ const removeItems = (e) => {
     itemCompleted.forEach((delItem) => {
       listUl.removeChild(delItem);
     });
-    ListOfItems.updateList('.app-item');
+    const itemsRender = document.querySelectorAll('.app-item');
+    ListOfItems.updateList(itemsRender);
   }
 };
 

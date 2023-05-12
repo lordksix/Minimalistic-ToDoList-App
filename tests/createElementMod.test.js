@@ -4,7 +4,7 @@
 
 import {
   createButton, addClass, createElementDefault,
-  createNS,
+  createNS, createLabel,
 } from '../src/modules/createElementMod.js';
 
 describe('Button Generator Function', () => {
@@ -106,12 +106,23 @@ describe('Create Element Function', () => {
   });
 });
 
-describe('Create Element Function', () => {
+describe('Create SVG Function', () => {
   const div = '<svg class="icon-more-vert"><use href="./asset/resource/icons.svg#icon-more-vert" class="icon-more-vert-use"></use></svg>';
 
   test('Add one class to HTML element', () => {
     const temp = document.createElement('div');
     temp.appendChild(createNS('./asset/resource/icons.svg#icon-more-vert'));
+
+    expect(temp.innerHTML).toEqual(div);
+  });
+});
+
+describe('Create Label Function', () => {
+  const div = '<label class="app-text" for="false" tabindex="0">dsdsd</label>';
+
+  test('Add one class to HTML element', () => {
+    const temp = document.createElement('div');
+    temp.appendChild(createLabel());
 
     expect(temp.innerHTML).toEqual(div);
   });
