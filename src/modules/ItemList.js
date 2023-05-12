@@ -24,15 +24,14 @@ class ItemList {
    */
   add(descrip, xlink) {
     let newChild = false;
-    if (descrip.value.length) {
+    if (descrip.length) {
       const index = this.length + 1;
-      const item = new ItemElem(descrip.value, index);
+      const item = new ItemElem(descrip, index);
       this.itemArray = this.itemArray.concat(item);
       localStorageInteration(this.localName, this.itemArray);
       const classesSec = itemClasses();
-      newChild = [index, xlink, descrip.value, ...classesSec];
+      newChild = [index, xlink, descrip, ...classesSec];
       this.length += 1;
-      descrip.value = '';
     }
     return newChild;
   }

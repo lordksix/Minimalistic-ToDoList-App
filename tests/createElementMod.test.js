@@ -93,6 +93,8 @@ describe('Create Element Function', () => {
   const classStr = 'clr-btn';
   const classStr2 = 'awesome';
   const classArr = ['clr-btn', 'awesome'];
+  const pelem = document.createElement('p');
+  pelem.textContent = textBtn;
 
   test('Add one class to HTML element', () => {
     div.classList.add(classStr);
@@ -102,7 +104,17 @@ describe('Create Element Function', () => {
 
   test('Add multiple class to HTML', () => {
     div.classList.add(classStr2);
+
     expect(createElementDefault('div', classArr, textBtn)).toEqual(div);
+  });
+
+  test('Append child to HTML', () => {
+    const divtest = '<div class="clr-btn awesome">Clear All<p>Clear All</p></div>';
+    const temp = document.createElement('div');
+    const elem = createElementDefault('div', classArr, textBtn, pelem);
+    temp.appendChild(elem);
+
+    expect(temp.innerHTML).toEqual(divtest);
   });
 });
 
@@ -118,11 +130,12 @@ describe('Create SVG Function', () => {
 });
 
 describe('Create Label Function', () => {
-  const div = '<label class="app-text" for="false" tabindex="0">dsdsd</label>';
+  const div = '<label class="app-text">sdsdsd</label>';
 
   test('Add one class to HTML element', () => {
     const temp = document.createElement('div');
-    temp.appendChild(createLabel());
+    const label = createLabel(false, 'app-text', 'sdsdsd');
+    temp.appendChild(label);
 
     expect(temp.innerHTML).toEqual(div);
   });

@@ -29,6 +29,11 @@ const createElementDefault = (elem, classes = false, textContent = false, innerC
   return element;
 };
 
+/**
+ * Creates an HTML svg element to be rendered dinamically
+ * @param {string} href Hyperlink reference for file location
+ * @returns {HTMLOrSVGElement} HTML svg element to be append to DOM to be rendered dinamically
+ */
 const createNS = (href) => {
   const xlink = href.split('#');
   const use = document.createElementNS('http://www.w3.org/2000/svg', 'use');
@@ -40,9 +45,19 @@ const createNS = (href) => {
   return svg;
 };
 
+/**
+ * Creates a HTML label element with a for attribute, differete classes and inner child and txt
+ * content
+ * @param {string} forAtr=false For attribute in label that indicates which input or text area
+ * it is linked with
+ * @param {string} classes=false String or array of string with class names
+ * @param {string} textContent=false String that represents the text content of the label
+ * @param {HTMLElement} innerChild=false HTML element to be append to label
+ * @returns {HTMLLabelElement} HTML label element ready to be append to the dom
+ */
 const createLabel = (forAtr = false, classes = false, textContent = false, innerChild = false) => {
   const label = createElementDefault('label', classes, textContent, innerChild);
-  label.setAttribute('for', forAtr);
+  if (forAtr) label.setAttribute('for', forAtr);
   return label;
 };
 

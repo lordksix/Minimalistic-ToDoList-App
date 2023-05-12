@@ -62,17 +62,17 @@ const updateList = (e) => {
     case 'item-chk':
       listItem = e.target.parentNode;
       listItem.classList.toggle('completed');
-      ListOfItems.togglecomplete(parseInt(listItem.dataset.index, 10));
+      ListOfItems.toggleComplete(parseInt(listItem.dataset.index, 10));
       break;
     case 'icon-check':
       listItem = e.target.parentNode.parentNode;
       listItem.classList.toggle('completed');
-      ListOfItems.togglecomplete(parseInt(listItem.dataset.index, 10));
+      ListOfItems.toggleComplete(parseInt(listItem.dataset.index, 10));
       break;
     case 'icon-check-use':
       listItem = e.target.parentNode.parentNode.parentNode;
       listItem.classList.toggle('completed');
-      ListOfItems.togglecomplete(parseInt(listItem.dataset.index, 10));
+      ListOfItems.toggleComplete(parseInt(listItem.dataset.index, 10));
       break;
     case 'app-text':
       updateDescription(e.target.parentNode.parentNode);
@@ -138,12 +138,13 @@ const addDragEventListeners = (elem, draggedTarget) => {
  */
 const addItem = (e) => {
   e.preventDefault();
-  const variable = ListOfItems.add(newItem, xlinkHref);
+  const variable = ListOfItems.add(newItem.value, xlinkHref);
   if (variable) {
     const newChild = createListItem(...variable);
     listUl.appendChild(newChild);
     const target = { listUl, element: undefined };
     addDragEventListeners(newChild, target);
+    newItem.value = '';
   }
 };
 
