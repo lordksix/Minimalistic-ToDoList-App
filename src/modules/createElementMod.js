@@ -1,3 +1,7 @@
+const redirectWindow = (href) => {
+  window.location.href = href;
+};
+
 /**
  * Function to add class or classes to HTML Element
  * @param {HTMLElement} elem HTML Element to be modified.
@@ -91,9 +95,7 @@ const createButton = (func, classes, ariaLabel, textContent = false,
   addClass(button, classes);
   if (textContent) button.textContent = textContent;
   if (href) {
-    button.addEventListener('click', () => {
-      window.location.href = href;
-    });
+    button.addEventListener('click', redirectWindow(href));
   }
   if (innerChild) button.appendChild(innerChild);
   return button;

@@ -4,7 +4,7 @@
 
 import {
   createButton, addClass, createElementDefault,
-  createNS, createLabel,
+  createNS, createLabel, createTextArea,
 } from '../src/modules/createElementMod.js';
 
 describe('Button Generator Function', () => {
@@ -54,6 +54,13 @@ describe('Button Generator Function', () => {
       window.location.href = href;
     });
     expect(createButton(typeBtn, classArr, ariaLbl, textBtn, false, href)).toEqual(btn);
+  });
+
+  test('Just button', () => {
+    const btn1 = document.createElement('button');
+    btn1.type = 'button';
+
+    expect(createButton(typeBtn)).toEqual(btn1);
   });
 });
 
@@ -116,6 +123,15 @@ describe('Create Element Function', () => {
 
     expect(temp.innerHTML).toEqual(divtest);
   });
+
+  test('Just element', () => {
+    const divtest1 = '<div></div>';
+    const temp1 = document.createElement('div');
+    const elem1 = createElementDefault('div');
+    temp1.appendChild(elem1);
+
+    expect(temp1.innerHTML).toEqual(divtest1);
+  });
 });
 
 describe('Create SVG Function', () => {
@@ -130,13 +146,46 @@ describe('Create SVG Function', () => {
 });
 
 describe('Create Label Function', () => {
-  const div = '<label class="app-text">sdsdsd</label>';
+  const div = '<label class="app-text" for="false">sdsdsd</label>';
+  const div1 = '<label></label>';
 
   test('Add one class to HTML element', () => {
     const temp = document.createElement('div');
-    const label = createLabel(false, 'app-text', 'sdsdsd');
+    const label = createLabel('false', 'app-text', 'sdsdsd');
     temp.appendChild(label);
 
     expect(temp.innerHTML).toEqual(div);
+  });
+
+  test('Add one class to HTML element', () => {
+    const temp1 = document.createElement('div');
+    const label1 = createLabel();
+    temp1.appendChild(label1);
+
+    expect(temp1.innerHTML).toEqual(div1);
+  });
+});
+
+describe('Create text area Function', () => {
+  const div = '<textarea class="app-text" maxlength="255" spellcheck="true">sdsds<p>Clear All</p></textarea>';
+  const div1 = '<textarea spellcheck="true"></textarea>';
+  const textBtn = 'Clear All';
+  const pelem = document.createElement('p');
+  pelem.textContent = textBtn;
+
+  test('Add one class to HTML element', () => {
+    const temp = document.createElement('div');
+    const label = createTextArea(255, 'app-text', 'sdsds', pelem);
+    temp.appendChild(label);
+
+    expect(temp.innerHTML).toEqual(div);
+  });
+
+  test('Add one class to HTML element', () => {
+    const temp1 = document.createElement('div');
+    const label1 = createTextArea();
+    temp1.appendChild(label1);
+
+    expect(temp1.innerHTML).toEqual(div1);
   });
 });
